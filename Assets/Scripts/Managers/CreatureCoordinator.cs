@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +37,10 @@ public class CreatureCoordinator : MonoBehaviour
         GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
         basic_creature.transform.position = enemy_spawnpoint.position;
         basic_creature.GetComponent<Creature>().team = Team.Enemy;
+        CreatureCoordinator.Instance.AddCreature(
+            basic_creature.GetComponent<Creature>(),
+            Team.Enemy
+            );
     }
 
     public void CreateBasicPlayerUnit()
@@ -43,6 +48,10 @@ public class CreatureCoordinator : MonoBehaviour
         GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
         basic_creature.transform.position = player_spawnpoint.position;
         basic_creature.GetComponent<Creature>().team = Team.Player;
+        CreatureCoordinator.Instance.AddCreature(
+            basic_creature.GetComponent<Creature>(),
+            Team.Player
+            );
     }
 
     public void AddCreature(Creature creature, Team team)
@@ -55,10 +64,13 @@ public class CreatureCoordinator : MonoBehaviour
             case Team.Player:
                 player_creatures.Add(creature);
                 break;
-            default:
-                Debug.LogError("Unlisted team");
-                break;
         }
+    }
+
+    public void RemoveCreature(Creature creature)
+    {
+        player_creatures.Remove(creature);
+        enemy_creatures.Remove(creature);
     }
 
     public List<Creature> GetPlayerCreatures()
@@ -77,11 +89,10 @@ public class CreatureCoordinator : MonoBehaviour
                 return GetEnemies();
             case Team.Player:
                 return GetPlayerCreatures();
-            default:
-                Debug.LogError("Unlisted team");
-                return new List<Creature>();
         }
+        throw new Exception("Team switch defaulted");
     }
+
     public List<Creature> GetOpponents(Team team)
     {
         switch (team)
@@ -90,10 +101,8 @@ public class CreatureCoordinator : MonoBehaviour
                 return GetPlayerCreatures();
             case Team.Player:
                 return GetEnemies();
-            default:
-                Debug.LogError("Unlisted team");
-                return new List<Creature>();
         }
+        throw new Exception("Team switch defaulted");
     }
 }
 

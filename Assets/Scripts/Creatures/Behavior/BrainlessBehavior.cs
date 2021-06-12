@@ -7,7 +7,8 @@ public class BrainlessBehavior : CreatureBehavior
 {
     public override BehaviorAction GetAction(Creature self)
     {
-        if (self.EnemiesInRange() && self.CanAttack())
+        bool target_in_range = self.EnemiesInRange().Count != 0;
+        if (target_in_range && self.CanAttack())
         {
             return BehaviorAction.Attack;
         }

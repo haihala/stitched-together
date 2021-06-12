@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+
 using UnityEngine;
 
 public class Creature : MonoBehaviour
@@ -17,11 +19,12 @@ public class Creature : MonoBehaviour
 
     private Health health;
 
-    private float decay_amount;
+    private float next_legal_attack = 0;
+    private float decay_speed;
     private float movement_force;
-    private float next_legal_attack;
     private float attack_delay;
     private float attack_range;
+    private float attack_damage;
 
     new private Rigidbody2D rigidbody;
 
@@ -33,7 +36,7 @@ public class Creature : MonoBehaviour
 
     void Update()
     {
-        health.Damage(decay_amount);
+        health.Damage(decay_speed * Time.deltaTime);
         switch (behavior.GetAction(this))
         {
             case BehaviorAction.Advance:
@@ -46,15 +49,13 @@ public class Creature : MonoBehaviour
                 break;
             case BehaviorAction.Attack:
                 // print("Attack!");
+                Attack(behavior.GetTarget(this));
                 break;
             case BehaviorAction.Special:
                 // print("Special!");
                 break;
             case BehaviorAction.Wait:
                 // print("Wait!");
-                break;
-            default:
-                Debug.LogError("Unlisted action");
                 break;
         }
     }
@@ -103,7 +104,22 @@ public class Creature : MonoBehaviour
 
     void ReCalculateProperties()
     {
-        // TODO update decay_amount, speed and co.
+        decay_speed = 0;
+        movement_force = 0;
+        attack_delay = 1;
+        attack_range = 1;
+        attack_damage = 0;
+        foreach (Limb limb in limbs)
+        {
+            decay_speed += limb.decay_speed;
+            attack_damage += limb.power;
+            attack_range += limb.size;
+            movement_force += limb.speed;
+
+            attack_delay /= limb.speed;
+        }
+
+        movement_force /= 100;
     }
 
     // For behaviors to make decisions
@@ -116,17 +132,18 @@ public class Creature : MonoBehaviour
     {
         return Time.time > next_legal_attack;
     }
-    public bool EnemiesInRange()
+    public List<Creature> EnemiesInRange()
     {
+        List<Creature> collector = new List<Creature>();
         foreach (Creature opponent in CreatureCoordinator.Instance.GetOpponents(team))
         {
             float distance = (opponent.transform.position - transform.position).magnitude;
             if (distance < attack_range)
             {
-                return true;
+                collector.Add(opponent);
             }
         }
-        return false;
+        return collector;
     }
 
     public Vector3 Forward()
@@ -146,12 +163,13 @@ public class Creature : MonoBehaviour
         return -Forward();
     }
 
-    private void OnMouseDown()
+    private void Attack(Creature target)
     {
-        Vector3 mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // Camera is at z=-10 and not zeroing this makes things invisible but only in the game not in editor
-        // Joo oli hauska bugi track down.
-        mouse_position.z = 0;
-        AddLimb(test_limb, mouse_position);
+        if (!CanAttack())
+        {
+            throw new Exception("Attacking but CanAttack is false");
+        }
+        target.GetComponent<Health>().Damage(attack_damage);
+        next_legal_attack = Time.time + attack_delay;
     }
 }

@@ -28,6 +28,7 @@ public class Health : MonoBehaviour
     public void Die()
     {
         // TODO needs polish
+        CreatureCoordinator.Instance.RemoveCreature(GetComponent<Creature>());
         Destroy(gameObject);
     }
 }
