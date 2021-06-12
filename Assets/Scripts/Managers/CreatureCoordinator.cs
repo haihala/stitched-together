@@ -6,7 +6,6 @@ public class CreatureCoordinator : MonoBehaviour
 {
     // Purpose
     //      Spawn waves of enemies
-    public enum Team { Player, Enemy };
     private List<Creature> player_creatures;
     private List<Creature> enemy_creatures;
 
@@ -21,9 +20,25 @@ public class CreatureCoordinator : MonoBehaviour
         else
         {
             _instance = this;
+            player_creatures = new List<Creature>();
+            enemy_creatures = new List<Creature>();
         }
     }
-
+    public void AddCreature(Creature creature, Team team)
+    {
+        switch (team)
+        {
+            case Team.Enemy:
+                enemy_creatures.Add(creature);
+                break;
+            case Team.Player:
+                player_creatures.Add(creature);
+                break;
+            default:
+                Debug.LogError("Unlisted team");
+                break;
+        }
+    }
 
     public List<Creature> GetPlayerCreatures()
     {
@@ -60,3 +75,5 @@ public class CreatureCoordinator : MonoBehaviour
         }
     }
 }
+
+public enum Team { Player, Enemy };

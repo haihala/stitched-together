@@ -10,8 +10,7 @@ public class Creature : MonoBehaviour
     //      Manage a single creature
 
     public CreatureBehavior behavior;
-    public CreatureCoordinator.Team team;
-    private CreatureCoordinator creature_coordinator;
+    public Team team;
 
     [SerializeField] private List<Limb> limbs;
 
@@ -89,7 +88,7 @@ public class Creature : MonoBehaviour
     }
     public bool EnemiesInRange()
     {
-        foreach (Creature opponent in creature_coordinator.GetOpponents(team))
+        foreach (Creature opponent in CreatureCoordinator.Instance.GetOpponents(team))
         {
             float distance = (opponent.transform.position - transform.position).magnitude;
             if (distance < attack_range)
@@ -102,7 +101,7 @@ public class Creature : MonoBehaviour
 
     public Vector3 Forward()
     {
-        if (team == CreatureCoordinator.Team.Player)
+        if (team == Team.Player)
         {
             return new Vector3(1, 0, 0);
         }
