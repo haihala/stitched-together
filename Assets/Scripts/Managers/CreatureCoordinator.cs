@@ -6,6 +6,12 @@ public class CreatureCoordinator : MonoBehaviour
 {
     // Purpose
     //      Spawn waves of enemies
+    //      Keep track of creatures on the battlefield
+    public Transform enemy_spawnpoint;
+    public Transform player_spawnpoint;
+    public GameObject basic_torso;
+    public GameObject basic_arm;
+
     private List<Creature> player_creatures;
     private List<Creature> enemy_creatures;
 
@@ -24,6 +30,21 @@ public class CreatureCoordinator : MonoBehaviour
             enemy_creatures = new List<Creature>();
         }
     }
+
+    public void CreateBasicEnemy()
+    {
+        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
+        basic_creature.transform.position = enemy_spawnpoint.position;
+        basic_creature.GetComponent<Creature>().team = Team.Enemy;
+    }
+
+    public void CreateBasicPlayerUnit()
+    {
+        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
+        basic_creature.transform.position = player_spawnpoint.position;
+        basic_creature.GetComponent<Creature>().team = Team.Player;
+    }
+
     public void AddCreature(Creature creature, Team team)
     {
         switch (team)

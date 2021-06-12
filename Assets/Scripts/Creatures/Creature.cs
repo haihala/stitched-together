@@ -11,6 +11,7 @@ public class Creature : MonoBehaviour
 
     public CreatureBehavior behavior;
     public Team team;
+    public GameObject test_limb;
 
     [SerializeField] private List<Limb> limbs;
 
@@ -36,21 +37,21 @@ public class Creature : MonoBehaviour
         switch (behavior.GetAction(this))
         {
             case BehaviorAction.Advance:
-                print("Advance!");
+                // print("Advance!");
                 rigidbody.AddForce(Forward() * movement_force);
                 break;
             case BehaviorAction.Retreat:
-                print("Retreat!");
+                // print("Retreat!");
                 rigidbody.AddForce(Backward() * movement_force);
                 break;
             case BehaviorAction.Attack:
-                print("Attack!");
+                // print("Attack!");
                 break;
             case BehaviorAction.Special:
-                print("Special!");
+                // print("Special!");
                 break;
             case BehaviorAction.Wait:
-                print("Wait!");
+                // print("Wait!");
                 break;
             default:
                 Debug.LogError("Unlisted action");
@@ -58,17 +59,46 @@ public class Creature : MonoBehaviour
         }
     }
 
-    public void AddLimb(GameObject limb, Vector3 position)
+    public GameObject AddLimb(GameObject limb)
     {
-        Instantiate(
+        GameObject new_limb = Instantiate(
             limb,
-            position,
-            limb.transform.rotation,
             transform
             );
 
-        limbs.Add(limb.GetComponent<Limb>());
+        Collider2D[] children_colliders = new_limb.GetComponentsInChildren<Collider2D>();
+        Collider2D body_collider = GetComponent<Collider2D>();
+
+        foreach (Collider2D collider in children_colliders)
+        {
+            Physics2D.IgnoreCollision(collider, body_collider);
+            foreach (Collider2D collider2 in children_colliders)
+            {
+                Physics2D.IgnoreCollision(collider, collider2);
+            }
+
+        }
+
+        limbs.Add(new_limb.GetComponent<Limb>());
         ReCalculateProperties();
+        return new_limb;
+    }
+    public GameObject AddLimb(GameObject limb, Vector3 position)
+    {
+        GameObject new_limb = AddLimb(limb);
+        new_limb.transform.position = position;
+
+        Vector3 direction_vector = position - transform.position;
+        float angle = Mathf.Atan2(direction_vector.x, direction_vector.y) * Mathf.Rad2Deg;
+        new_limb.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+        return new_limb;
+    }
+    public GameObject AddLimb(GameObject limb, Transform target_transform)
+    {
+        GameObject new_limb = AddLimb(limb);
+        new_limb.transform.position = target_transform.position;
+        new_limb.transform.rotation = target_transform.rotation;
+        return new_limb;
     }
 
     void ReCalculateProperties()
@@ -114,5 +144,14 @@ public class Creature : MonoBehaviour
     public Vector3 Backward()
     {
         return -Forward();
+    }
+
+    private void OnMouseDown()
+    {
+        Vector3 mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // Camera is at z=-10 and not zeroing this makes things invisible but only in the game not in editor
+        // Joo oli hauska bugi track down.
+        mouse_position.z = 0;
+        AddLimb(test_limb, mouse_position);
     }
 }
