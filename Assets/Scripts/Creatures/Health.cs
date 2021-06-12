@@ -16,6 +16,11 @@ public class Health : MonoBehaviour
         current_health = starting_health;
     }
 
+    public float GetAmount()
+    {
+        return current_health;
+    }
+
     public void Damage(float amount)
     {
         current_health -= amount;
