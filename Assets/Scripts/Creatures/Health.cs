@@ -27,6 +27,7 @@ public class Health : MonoBehaviour
 
     public void Die()
     {
-
+        // TODO needs polish
+        Destroy(gameObject);
     }
 }
