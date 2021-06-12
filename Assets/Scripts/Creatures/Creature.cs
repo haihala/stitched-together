@@ -40,11 +40,14 @@ public class Creature : MonoBehaviour
         {
             case BehaviorAction.Advance:
                 // print("Advance!");
-                rigidbody.AddForce(Forward() * movement_force);
+                Vector2 force = (Vector2)(Forward() * movement_force);
+                print(force);
+                rigidbody.AddForce(force, ForceMode2D.Force);
+                // print(rigidbody.);
                 break;
             case BehaviorAction.Retreat:
                 // print("Retreat!");
-                rigidbody.AddForce(Backward() * movement_force);
+                // rigidbody.AddForce(Backward() * movement_force);
                 break;
             case BehaviorAction.Attack:
                 // print("Attack!");

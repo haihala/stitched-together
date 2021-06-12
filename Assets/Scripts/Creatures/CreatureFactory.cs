@@ -16,10 +16,12 @@ public class CreatureFactory : MonoBehaviour
         GameObject instance = Instantiate(body);
         Torso torso = instance.GetComponent<Torso>();
         Creature creature = instance.GetComponent<Creature>();
+        
         foreach (Transform spot in torso.reasonable_limb_spots)
         {
             creature.AddLimb(limbs[Random.Range(0, limbs.Count)], spot);
         }
+        
         return instance;
     }
 }

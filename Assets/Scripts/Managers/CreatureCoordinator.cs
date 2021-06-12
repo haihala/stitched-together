@@ -14,6 +14,8 @@ public class CreatureCoordinator : MonoBehaviour
     public GameObject basic_torso;
     public GameObject basic_arm;
 
+    public CreatureBehavior NoBehavior;
+
     private List<Creature> player_creatures;
     private List<Creature> enemy_creatures;
 
@@ -60,6 +62,8 @@ public class CreatureCoordinator : MonoBehaviour
         GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
         basic_creature.transform.position = fodder_spawnpoint.position;
         basic_creature.GetComponent<Creature>().team = Team.Player;
+        basic_creature.GetComponent<Creature>().behavior = NoBehavior;
+        basic_creature.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         CreatureCoordinator.Instance.AddCreature(
             basic_creature.GetComponent<Creature>(),
             Team.Player

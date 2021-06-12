@@ -15,7 +15,7 @@ public class CameraMover : MonoBehaviour
     public HoverDetector right_camera_panner;
 
     public float pan_speed;
-    public float max_pan_distance;
+    public Transform pan_floor;
 
     private float battlefield_offset;
     private bool in_stitchery = false;
@@ -46,7 +46,7 @@ public class CameraMover : MonoBehaviour
 
             // Clamp
             Vector3 clampedPosition = transform.position;
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, 0, max_pan_distance);
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, pan_floor.position.x - pan_floor.localScale.x/2, pan_floor.position.x + pan_floor.localScale.x / 2);
             transform.position = clampedPosition;
         }
     }
