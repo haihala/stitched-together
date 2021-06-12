@@ -8,14 +8,24 @@ public class Health : MonoBehaviour
     //      Keep track of the hp for a creature
     //      Do something when the hp runs out
 
-    // Start is called before the first frame update
+    public float starting_health;
+    private float current_health;
+
     void Start()
     {
-
+        current_health = starting_health;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Damage(float amount)
+    {
+        current_health -= amount;
+        if (current_health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
     {
 
     }

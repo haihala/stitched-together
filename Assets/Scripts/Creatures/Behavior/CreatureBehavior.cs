@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreatureBehavior : MonoBehaviour
+public abstract class CreatureBehavior : ScriptableObject
 {
     // Purpose
-    //      Base class for different types of creatures
+    //      Base class for different types of creatures decision making styles
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public abstract BehaviorAction GetAction(Creature self);
 }
+
+
+public enum BehaviorAction
+{
+    Advance,
+    Retreat,
+    Attack,
+    Special,
+    Wait,
+};
