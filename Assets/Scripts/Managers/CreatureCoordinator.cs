@@ -85,7 +85,7 @@ public class CreatureCoordinator : MonoBehaviour
         enemy_creatures.Remove(creature);
     }
 
-    public List<Creature> GetPlayerCreatures()
+    public List<Creature> GetPlayerUnits()
     {
         return player_creatures;
     }
@@ -100,7 +100,7 @@ public class CreatureCoordinator : MonoBehaviour
             case Team.Enemy:
                 return GetEnemies();
             case Team.Player:
-                return GetPlayerCreatures();
+                return GetPlayerUnits();
         }
         throw new Exception("Team switch defaulted");
     }
@@ -110,7 +110,7 @@ public class CreatureCoordinator : MonoBehaviour
         switch (team)
         {
             case Team.Enemy:
-                return GetPlayerCreatures();
+                return GetPlayerUnits();
             case Team.Player:
                 return GetEnemies();
         }
