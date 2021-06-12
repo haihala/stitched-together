@@ -10,10 +10,11 @@ public class CameraMover : MonoBehaviour
     public Transform stitchery;
     public Transform fortress;
     private Vector3 battlefield_offset;
+    private float z = -10;
 
     public void JumpToStitchery()
     {
-        transform.position = stitchery.position;
+        transform.position = new Vector3(stitchery.position.x, stitchery.position.y, z);
     }
     public void JumpToBattlefield()
     {
