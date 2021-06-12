@@ -13,7 +13,6 @@ public class Creature : MonoBehaviour
 
     public CreatureBehavior behavior;
     public Team team;
-    public GameObject test_limb;
 
     [SerializeField] private List<Limb> limbs;
 

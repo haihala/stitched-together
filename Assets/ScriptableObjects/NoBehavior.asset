@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9a3671b09df62044aa57423ecf9d768, type: 3}
-  m_Name: BrainlessBehavior
+  m_Script: {fileID: 11500000, guid: 5a0823d1e7c1cb3498f78cafc2e262a0, type: 3}
+  m_Name: NoBehavior
   m_EditorClassIdentifier: 

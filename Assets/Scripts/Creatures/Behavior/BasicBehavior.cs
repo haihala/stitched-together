@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BrainlessBehavior", menuName = "Stitched together/BrainlessBehavior", order = 0)]
-public class BrainlessBehavior : CreatureBehavior
+[CreateAssetMenu(fileName = "BasicBehavior", menuName = "Stitched together/BasicBehavior", order = 0)]
+public class BasicBehavior : CreatureBehavior
 {
     public override BehaviorAction GetAction(Creature self)
     {

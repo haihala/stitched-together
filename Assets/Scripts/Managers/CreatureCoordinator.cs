@@ -10,6 +10,7 @@ public class CreatureCoordinator : MonoBehaviour
     //      Keep track of creatures on the battlefield
     public Transform enemy_spawnpoint;
     public Transform player_spawnpoint;
+    public Transform fodder_spawnpoint;
     public GameObject basic_torso;
     public GameObject basic_arm;
 
@@ -47,6 +48,17 @@ public class CreatureCoordinator : MonoBehaviour
     {
         GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
         basic_creature.transform.position = player_spawnpoint.position;
+        basic_creature.GetComponent<Creature>().team = Team.Player;
+        CreatureCoordinator.Instance.AddCreature(
+            basic_creature.GetComponent<Creature>(),
+            Team.Player
+            );
+    }
+
+    public void CreateFodder()
+    {
+        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
+        basic_creature.transform.position = fodder_spawnpoint.position;
         basic_creature.GetComponent<Creature>().team = Team.Player;
         CreatureCoordinator.Instance.AddCreature(
             basic_creature.GetComponent<Creature>(),

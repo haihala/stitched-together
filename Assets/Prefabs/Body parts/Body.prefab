@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71042fdd974b9f140a7d288cbb6e0ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behavior: {fileID: 11400000, guid: 427c1e1dd046cea449abdc1b0255fc6f, type: 2}
+  behavior: {fileID: 11400000, guid: 2acc7f137bde13c47bf7133aae343f71, type: 2}
   team: 0
   test_limb: {fileID: 5809917471417500299, guid: d2ede554cf6c1dd47bc71328acddb90b, type: 3}
   limbs: []
