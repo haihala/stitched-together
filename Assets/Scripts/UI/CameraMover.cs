@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraMover : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class CameraMover : MonoBehaviour
     {
         battlefield_offset = transform.position.x;
         transform.position = new Vector3(stitchery.position.x, stitchery.position.y, z);
+        in_stitchery = true;
+        left_camera_panner.GetComponent<Image>().enabled = false;
+        right_camera_panner.GetComponent<Image>().enabled = false;
 
     }
     public void JumpToBattlefield()
@@ -33,6 +37,9 @@ public class CameraMover : MonoBehaviour
             fortress.position.x + battlefield_offset,
             fortress.position.y,
             z);
+        in_stitchery = false;
+        left_camera_panner.GetComponent<Image>().enabled = true;
+        right_camera_panner.GetComponent<Image>().enabled = true;
     }
 
     private void Update()
@@ -46,7 +53,7 @@ public class CameraMover : MonoBehaviour
 
             // Clamp
             Vector3 clampedPosition = transform.position;
-            clampedPosition.x = Mathf.Clamp(clampedPosition.x, pan_floor.position.x - pan_floor.localScale.x/2, pan_floor.position.x + pan_floor.localScale.x / 2);
+            clampedPosition.x = Mathf.Clamp(clampedPosition.x, pan_floor.position.x - pan_floor.localScale.x / 2, pan_floor.position.x + pan_floor.localScale.x / 2);
             transform.position = clampedPosition;
         }
     }
