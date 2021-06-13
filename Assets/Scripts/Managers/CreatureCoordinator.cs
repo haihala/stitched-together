@@ -16,10 +16,12 @@ public class CreatureCoordinator : MonoBehaviour
     public CreatureBehavior NoBehavior;
     public float spawn_interval_start;
     public float spawn_interval_ramp;
+    public float spawn_amount_ramp;
     public float spawn_interval_min;
 
     private float spawn_interval;
     private float next_spawn = 0;
+    private float extra_enemy_count = 1;
     private List<Creature> player_creatures;
     private List<Creature> enemy_creatures;
 
@@ -117,6 +119,14 @@ public class CreatureCoordinator : MonoBehaviour
             next_spawn = Time.time + spawn_interval;
             spawn_interval = Mathf.Max(spawn_interval - spawn_interval_ramp, spawn_interval_min);
             CreateFodderBodyPart();
+            if (spawn_interval == spawn_interval_min)
+            {
+                for (int i = 0; i < (int)extra_enemy_count; i++)
+                {
+                    CreateBasicEnemy();
+                }
+                extra_enemy_count += spawn_amount_ramp;
+            }
         }
     }
 

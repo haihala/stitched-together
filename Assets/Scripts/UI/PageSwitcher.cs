@@ -36,7 +36,7 @@ public class PageSwitcher : MonoBehaviour
             child.SetActive(false);
         }
 
-        current_page = Mathf.Clamp(page, 0, pages.Count);
+        current_page = Mathf.Clamp(page, 0, pages.Count - 1);
         pages[current_page].SetActive(true);
     }
 }
