@@ -8,6 +8,8 @@ public class CreatureManager : MonoBehaviour
     //      Remove body parts
     //      Attach body parts
     //      Move Creatures in stitchery (Should be in this script because it is the easy way to resolve if a click hits a joint and the body, limb moves.)
+    public Zone work_area;
+
     private Creature hovered_creature;
     private LimbJoint hovered_limb;
 
@@ -77,7 +79,7 @@ public class CreatureManager : MonoBehaviour
             if (hovered_creature)
             {
                 // Always set if limb/creature is hovered
-                if (hovered_creature.on_workbench)
+                if (work_area.Contains(hovered_creature.gameObject))
                 {
                     // Workbench stuff
                 }

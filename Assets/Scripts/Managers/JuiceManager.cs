@@ -7,16 +7,25 @@ public class JuiceManager : MonoBehaviour
     // Purpose
     //      Store how much juice the player has
     //      Use that juice to do stuff with it
+    float juice_available;
 
-    // Start is called before the first frame update
-    void Start()
+    private static JuiceManager _instance;
+    public static JuiceManager Instance { get { return _instance; } }
+
+    private void Awake()
     {
-
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Add(float amount)
     {
-
+        juice_available += amount;
     }
 }

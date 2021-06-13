@@ -9,15 +9,13 @@ public class Blender : MonoBehaviour
     //      Turn that into juice
     //      Update juice count on juice manager
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Health health = other.GetComponent<Health>();
+        if (health)
+        {
+            JuiceManager.Instance.Add(health.GetAmount());
+            health.Die();
+        }
     }
 }
