@@ -194,7 +194,7 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 4}
   m_ConnectedAnchor: {x: 0, y: 10}
   m_AutoConfigureDistance: 0
-  m_Distance: 20
+  m_Distance: 18
   m_DampingRatio: 0
   m_Frequency: 1
 --- !u!114 &7922112065557064101
@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hanger_template: {fileID: 1789191535480432476, guid: 1074c4cd4c95e9b458ac79cad88a268d, type: 3}
+  hanger: {fileID: 0}
 --- !u!1 &3791025706166935756
 GameObject:
   m_ObjectHideFlags: 0

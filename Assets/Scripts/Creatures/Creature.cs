@@ -22,7 +22,7 @@ public class Creature : MonoBehaviour
     private float move_direction;
 
     private float next_legal_attack = 0;
-    private float decay_speed;
+    public float decay_speed;
     private float movement_force;
     private float attack_delay;
     private float attack_range;
