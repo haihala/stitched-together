@@ -37,6 +37,9 @@ public class CreatureCoordinator : MonoBehaviour
 
     public void CreateBasicEnemyWithoutReturning()
     {
+        // These are for buttons.
+        // Apparently button functions can't have return values.
+
         CreateBasicEnemy();
     }
 
@@ -56,6 +59,9 @@ public class CreatureCoordinator : MonoBehaviour
 
     public void CreateBasicPlayerUnitWithoutReturning()
     {
+        // These are for buttons.
+        // Apparently button functions can't have return values.
+
         CreateBasicPlayerUnit();
     }
 
@@ -74,6 +80,9 @@ public class CreatureCoordinator : MonoBehaviour
 
     public void CreateFodderWithoutReturning()
     {
+        // These are for buttons.
+        // Apparently button functions can't have return values.
+
         CreateFodder();
     }
 
@@ -107,8 +116,16 @@ public class CreatureCoordinator : MonoBehaviour
 
     public void RemoveCreature(Creature creature)
     {
-        player_creatures.Remove(creature);
-        enemy_creatures.Remove(creature);
+        switch (creature.team)
+        {
+            case Team.Player:
+                player_creatures.Remove(creature);
+                break;
+            case Team.Enemy:
+                enemy_creatures.Remove(creature);
+                CreateFodder();
+                break;
+        }
     }
 
     public List<Creature> GetPlayerUnits()
