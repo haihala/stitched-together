@@ -11,8 +11,14 @@ public class CreatureManager : MonoBehaviour
     private Creature hovered_creature;
     private LimbJoint hovered_limb;
 
+    private GameObject drag_target;
+    private Vector3 drag_point;
+    private Vector3 pointer_position;
+
     private static CreatureManager _instance;
     public static CreatureManager Instance { get { return _instance; } }
+
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -43,5 +49,104 @@ public class CreatureManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public bool TrySetHoveredCreature(Creature creature)
+    {
+        if (hovered_creature)
+        {
+            return false;
+        }
+        hovered_creature = creature;
+        return true;
+    }
+
+    public bool TryUnsetHoveredCreature(Creature creature)
+    {
+        if (hovered_creature == creature)
+        {
+            hovered_creature = null;
+            return true;
+        }
+        return false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (hovered_creature)
+            {
+                // Always set if limb/creature is hovered
+                if (hovered_creature.on_workbench)
+                {
+                    // Workbench stuff
+                }
+                else
+                {
+                    StartDrag(hovered_creature.gameObject);
+                }
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (drag_target)
+                EndDrag();
+        }
+
+        Vector3 new_pointer_position = PointingAt();
+
+        if (drag_target)
+        {
+            Vector3 shift = new_pointer_position - pointer_position;
+            drag_target.transform.position += shift;
+        }
+
+        pointer_position = new_pointer_position;
+    }
+
+    void StartDrag(GameObject target)
+    {
+        drag_target = target;
+
+        SetColliderStateRecursively(drag_target, false);
+        drag_target.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+    }
+
+    void EndDrag()
+    {
+        SetColliderStateRecursively(drag_target, true);
+        drag_target.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
+        drag_target = null;
+    }
+
+    void SetColliderStateRecursively(GameObject obj, bool collide)
+    {
+        if (obj == null)
+        {
+            return;
+        }
+        Collider2D col = obj.GetComponent<Collider2D>();
+        if (col)
+        {
+            col.enabled = collide;
+        }
+
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null)
+            {
+                continue;
+            }
+            SetColliderStateRecursively(child.gameObject, collide);
+        }
+    }
+
+    Vector3 PointingAt()
+    {
+        // Where mouse is pointing at in world space
+        Vector3 original_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return new Vector3(original_point.x, original_point.y, 0);
     }
 }

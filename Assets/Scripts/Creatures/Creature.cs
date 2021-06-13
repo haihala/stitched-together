@@ -14,6 +14,8 @@ public class Creature : MonoBehaviour
     public CreatureBehavior behavior;
     public Team team;
 
+    public bool on_workbench;
+
     [SerializeField] private List<Limb> limbs;
 
     private Health health;
@@ -41,7 +43,6 @@ public class Creature : MonoBehaviour
             case BehaviorAction.Advance:
                 // print("Advance!");
                 Vector2 force = (Vector2)(Forward() * movement_force);
-                print(force);
                 rigidbody.AddForce(force, ForceMode2D.Force);
                 // print(rigidbody.);
                 break;
@@ -173,5 +174,31 @@ public class Creature : MonoBehaviour
         }
         target.GetComponent<Health>().Damage(attack_damage);
         next_legal_attack = Time.time + attack_delay;
+    }
+
+    public void Highlight()
+    {
+
+    }
+
+    private void OnMouseEnter()
+    {
+        if (CreatureManager.Instance.TrySetHoveredCreature(this))
+        {
+            Highlight();
+        }
+    }
+
+    public void Unhighlight()
+    {
+
+    }
+
+    private void OnMouseExit()
+    {
+        if (CreatureManager.Instance.TryUnsetHoveredCreature(this))
+        {
+            Unhighlight();
+        }
     }
 }

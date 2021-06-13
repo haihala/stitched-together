@@ -157,6 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behavior: {fileID: 11400000, guid: 2acc7f137bde13c47bf7133aae343f71, type: 2}
   team: 0
+  on_workbench: 0
   limbs: []
 --- !u!114 &8227716832648629550
 MonoBehaviour:
