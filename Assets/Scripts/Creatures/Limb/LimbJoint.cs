@@ -30,7 +30,10 @@ public class LimbJoint : MonoBehaviour
     {
         if (CreatureManager.Instance.TrySetHoveredLimb(this))
         {
-            CreatureManager.Instance.TrySetHoveredCreature(transform.parent.GetComponent<Creature>());
+            if (transform.parent)
+            {
+                CreatureManager.Instance.TrySetHoveredCreature(transform.parent.GetComponent<Creature>());
+            }
             Highlight();
         }
     }
@@ -39,7 +42,10 @@ public class LimbJoint : MonoBehaviour
     {
         if (CreatureManager.Instance.TryUnsetHoveredLimb(this))
         {
-            CreatureManager.Instance.TryUnsetHoveredCreature(transform.parent.GetComponent<Creature>());
+            if (transform.parent)
+            {
+                CreatureManager.Instance.TryUnsetHoveredCreature(transform.parent.GetComponent<Creature>());
+            }
             Unhighlight();
         }
     }

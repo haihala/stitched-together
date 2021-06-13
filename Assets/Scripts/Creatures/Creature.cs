@@ -70,23 +70,37 @@ public class Creature : MonoBehaviour
             transform
             );
 
-        Collider2D[] children_colliders = new_limb.GetComponentsInChildren<Collider2D>();
-        Collider2D body_collider = GetComponent<Collider2D>();
-
-        foreach (Collider2D collider in children_colliders)
-        {
-            Physics2D.IgnoreCollision(collider, body_collider);
-            foreach (Collider2D collider2 in children_colliders)
-            {
-                Physics2D.IgnoreCollision(collider, collider2);
-            }
-
-        }
-
         limbs.Add(new_limb.GetComponent<Limb>());
+        Rigidbody2D rb = limb.GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        SetLayer(
+            new_limb.gameObject,
+            LayerMask.NameToLayer("CreatureLimbs")
+        );
+        SetSpringsEnabled(new_limb, true);
+
         ReCalculateProperties();
         return new_limb;
     }
+
+    public void RemoveLimb(Limb limb)
+    {
+        if (limbs.Contains(limb))
+        {
+            limb.transform.parent = null;
+            limbs.Remove(limb);
+            Rigidbody2D rb = limb.GetComponent<Rigidbody2D>();
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            SetLayer(
+                limb.gameObject,
+                LayerMask.NameToLayer("Default")
+            );
+            SetSpringsEnabled(limb.gameObject, false);
+
+            ReCalculateProperties();
+        }
+    }
+
     public GameObject AddLimb(GameObject limb, Vector3 position)
     {
         GameObject new_limb = AddLimb(limb);
@@ -103,6 +117,25 @@ public class Creature : MonoBehaviour
         new_limb.transform.position = target_transform.position;
         new_limb.transform.rotation = target_transform.rotation;
         return new_limb;
+    }
+
+    void SetLayer(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+
+        foreach (Transform child in obj.transform)
+        {
+            SetLayer(child.gameObject, layer);
+        }
+    }
+
+    void SetSpringsEnabled(GameObject obj, bool new_state)
+    {
+        foreach (SpringJoint2D spring in obj.GetComponentsInChildren<SpringJoint2D>())
+        {
+            spring.enabled = new_state;
+        }
+
     }
 
     void ReCalculateProperties()

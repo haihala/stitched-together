@@ -487,7 +487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f502c6b594f58d4297313fb571df759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage_per_second: 3
 --- !u!1 &389511426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1090,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 738870147}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15, y: 0, z: 0}
+  m_LocalPosition: {x: -15, y: 0.06, z: 0}
   m_LocalScale: {x: 40, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999432747}
@@ -2024,6 +2023,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   work_area: {fileID: 389511429}
+  hovered_creature: {fileID: 0}
+  hovered_limb: {fileID: 0}
+  drag_target: {fileID: 0}
 --- !u!1 &1104231876
 GameObject:
   m_ObjectHideFlags: 0
@@ -2441,7 +2443,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1265388548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.74, y: 3, z: 0}
+  m_LocalPosition: {x: -7.45, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1999432747}

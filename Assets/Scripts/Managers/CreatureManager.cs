@@ -10,10 +10,10 @@ public class CreatureManager : MonoBehaviour
     //      Move Creatures in stitchery (Should be in this script because it is the easy way to resolve if a click hits a joint and the body, limb moves.)
     public Zone work_area;
 
-    private Creature hovered_creature;
-    private LimbJoint hovered_limb;
+    public Creature hovered_creature;
+    public LimbJoint hovered_limb;
 
-    private GameObject drag_target;
+    public GameObject drag_target;
     private Vector3 drag_point;
     private Vector3 pointer_position;
 
@@ -76,17 +76,28 @@ public class CreatureManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (hovered_creature)
+            if (hovered_limb)
             {
-                // Always set if limb/creature is hovered
-                if (work_area.Contains(hovered_creature.gameObject))
+                if (hovered_creature)
                 {
-                    // Workbench stuff
+                    if (work_area.Contains(hovered_creature.gameObject))
+                    {
+                        hovered_creature.RemoveLimb(hovered_limb.GetComponent<Limb>());
+                        StartDrag(hovered_limb.gameObject);
+                    }
+                    else
+                    {
+                        StartDrag(hovered_creature.gameObject);
+                    }
                 }
                 else
                 {
-                    StartDrag(hovered_creature.gameObject);
+                    StartDrag(hovered_limb.gameObject);
                 }
+            }
+            else if (hovered_creature)
+            {
+                StartDrag(hovered_creature.gameObject);
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -124,23 +135,14 @@ public class CreatureManager : MonoBehaviour
 
     void SetColliderStateRecursively(GameObject obj, bool collide)
     {
-        if (obj == null)
-        {
-            return;
-        }
         Collider2D col = obj.GetComponent<Collider2D>();
         if (col)
         {
             col.enabled = collide;
         }
 
-
         foreach (Transform child in obj.transform)
         {
-            if (child == null)
-            {
-                continue;
-            }
             SetColliderStateRecursively(child.gameObject, collide);
         }
     }
