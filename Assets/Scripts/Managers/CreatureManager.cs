@@ -103,7 +103,11 @@ public class CreatureManager : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             if (drag_target)
+            {
+
+
                 EndDrag();
+            }
         }
 
         Vector3 new_pointer_position = PointingAt();
@@ -121,29 +125,55 @@ public class CreatureManager : MonoBehaviour
     {
         drag_target = target;
 
-        SetColliderStateRecursively(drag_target, false);
+        SetColliderState(drag_target, false);
         drag_target.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
     }
 
     void EndDrag()
     {
-        SetColliderStateRecursively(drag_target, true);
+        SetColliderState(drag_target, true);
         drag_target.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-
+        AttachLimb();
         drag_target = null;
     }
 
-    void SetColliderStateRecursively(GameObject obj, bool collide)
+    void SetColliderState(GameObject obj, bool collide)
     {
-        Collider2D col = obj.GetComponent<Collider2D>();
-        if (col)
+        foreach (Collider2D col in obj.GetComponentsInChildren<Collider2D>())
         {
             col.enabled = collide;
         }
+    }
 
-        foreach (Transform child in obj.transform)
+    void AttachLimb()
+    {
+        Limb limb = drag_target.GetComponent<Limb>();
+        if (limb)
         {
-            SetColliderStateRecursively(child.gameObject, collide);
+            Vector2 target = (Vector2)PointingAt();
+            foreach (GameObject go in work_area.content)
+            {
+                Collider2D collider = go.GetComponent<Collider2D>();
+                if (collider.bounds.Contains(target))
+                {
+                    Creature creature = go.GetComponent<Creature>();
+                    if (creature)
+                    {
+                        creature.AttachLimb(limb.gameObject);
+                        break;
+                    }
+                    else if (go.transform.parent)
+                    {
+                        // In case head is targeted
+                        creature = go.transform.parent.GetComponent<Creature>();
+                        if (creature)
+                        {
+                            creature.AttachLimb(limb.gameObject);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 

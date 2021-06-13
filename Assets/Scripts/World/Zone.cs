@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Zone : MonoBehaviour
 {
-    private List<GameObject> content;
+    public List<GameObject> content;
 
     private void Start()
     {
         content = new List<GameObject>();
     }
+
     public bool Contains(GameObject go)
     {
         return content.Contains(go);

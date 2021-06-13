@@ -63,23 +63,27 @@ public class Creature : MonoBehaviour
         }
     }
 
-    public GameObject AddLimb(GameObject limb)
+    public void AttachLimb(GameObject limb)
     {
-        GameObject new_limb = Instantiate(
-            limb,
-            transform
-            );
-
-        limbs.Add(new_limb.GetComponent<Limb>());
+        limb.transform.parent = transform;
+        limbs.Add(limb.GetComponent<Limb>());
         Rigidbody2D rb = limb.GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         SetLayer(
-            new_limb.gameObject,
+            limb.gameObject,
             LayerMask.NameToLayer("CreatureLimbs")
         );
-        SetSpringsEnabled(new_limb, true);
+        SetSpringsEnabled(limb, true);
 
         ReCalculateProperties();
+    }
+
+    public GameObject AddLimb(GameObject limb)
+    {
+        GameObject new_limb = Instantiate(limb);
+
+        AttachLimb(new_limb);
+
         return new_limb;
     }
 
