@@ -19,6 +19,7 @@ public class Creature : MonoBehaviour
     [SerializeField] private List<Limb> limbs;
 
     private Health health;
+    private float move_direction;
 
     private float next_legal_attack = 0;
     private float decay_speed;
@@ -41,24 +42,20 @@ public class Creature : MonoBehaviour
         switch (behavior.GetAction(this))
         {
             case BehaviorAction.Advance:
-                // print("Advance!");
-                Vector2 force = (Vector2)(Forward() * movement_force);
-                rigidbody.AddForce(force, ForceMode2D.Force);
-                // print(rigidbody.);
+                move_direction = 1;
                 break;
             case BehaviorAction.Retreat:
-                // print("Retreat!");
-                // rigidbody.AddForce(Backward() * movement_force);
+                move_direction = -1;
                 break;
             case BehaviorAction.Attack:
-                // print("Attack!");
                 Attack(behavior.GetTarget(this));
+                move_direction = 0;
                 break;
             case BehaviorAction.Special:
-                // print("Special!");
+                move_direction = 0;
                 break;
             case BehaviorAction.Wait:
-                // print("Wait!");
+                move_direction = 0;
                 break;
         }
     }
@@ -158,14 +155,12 @@ public class Creature : MonoBehaviour
 
             attack_delay /= limb.speed;
         }
-
-        movement_force /= 100;
     }
 
     // For behaviors to make decisions
     public float GetSpeed()
     {
-        return movement_force;
+        return movement_force * Time.deltaTime * move_direction * Forward().x;
     }
 
     public bool CanAttack()
