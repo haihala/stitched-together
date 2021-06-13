@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1084206875}
         m_TargetAssemblyTypeName: CreatureCoordinator, Assembly-CSharp
-        m_MethodName: CreateBasicPlayerUnit
+        m_MethodName: CreateBasicPlayerUnitWithoutReturning
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1429,7 +1429,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1084206875}
         m_TargetAssemblyTypeName: CreatureCoordinator, Assembly-CSharp
-        m_MethodName: CreateFodder
+        m_MethodName: CreateFodderWithoutReturning
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2142,6 +2142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe165a8c905e34a42814ad1e05da08bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unit_juice_cost: 30
 --- !u!114 &1084206878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3852,7 +3853,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1084206875}
         m_TargetAssemblyTypeName: CreatureCoordinator, Assembly-CSharp
-        m_MethodName: CreateBasicEnemy
+        m_MethodName: CreateBasicEnemyWithoutReturning
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

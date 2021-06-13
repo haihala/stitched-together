@@ -35,39 +35,61 @@ public class CreatureCoordinator : MonoBehaviour
         }
     }
 
-    public void CreateBasicEnemy()
+    public void CreateBasicEnemyWithoutReturning()
     {
-        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
-        basic_creature.transform.position = enemy_spawnpoint.position;
-        basic_creature.GetComponent<Creature>().team = Team.Enemy;
-        CreatureCoordinator.Instance.AddCreature(
-            basic_creature.GetComponent<Creature>(),
+        CreateBasicEnemy();
+    }
+
+    public Creature CreateBasicEnemy()
+    {
+        GameObject basic = CreatureFactory.Create(basic_torso, basic_arm);
+        basic.transform.position = enemy_spawnpoint.position;
+        Creature creature = basic.GetComponent<Creature>();
+        creature.team = Team.Enemy;
+        AddCreature(
+            creature,
             Team.Enemy
             );
+        return creature;
     }
 
-    public void CreateBasicPlayerUnit()
+
+    public void CreateBasicPlayerUnitWithoutReturning()
     {
-        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
-        basic_creature.transform.position = player_spawnpoint.position;
-        basic_creature.GetComponent<Creature>().team = Team.Player;
-        CreatureCoordinator.Instance.AddCreature(
-            basic_creature.GetComponent<Creature>(),
-            Team.Player
-            );
+        CreateBasicPlayerUnit();
     }
 
-    public void CreateFodder()
+    public Creature CreateBasicPlayerUnit()
     {
-        GameObject basic_creature = CreatureFactory.Create(basic_torso, basic_arm);
-        basic_creature.transform.position = fodder_spawnpoint.position;
-        basic_creature.GetComponent<Creature>().team = Team.Player;
-        basic_creature.GetComponent<Creature>().behavior = NoBehavior;
-        basic_creature.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        CreatureCoordinator.Instance.AddCreature(
-            basic_creature.GetComponent<Creature>(),
+        GameObject basic = CreatureFactory.Create(basic_torso, basic_arm);
+        basic.transform.position = player_spawnpoint.position;
+        Creature creature = basic.GetComponent<Creature>();
+        creature.team = Team.Player;
+        AddCreature(
+            creature,
             Team.Player
             );
+        return creature;
+    }
+
+    public void CreateFodderWithoutReturning()
+    {
+        CreateFodder();
+    }
+
+    public Creature CreateFodder()
+    {
+        GameObject basic = CreatureFactory.Create(basic_torso, basic_arm);
+        basic.transform.position = fodder_spawnpoint.position;
+        basic.GetComponent<Creature>().team = Team.Player;
+        basic.GetComponent<Creature>().behavior = NoBehavior;
+        basic.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        Creature creature = basic.GetComponent<Creature>();
+        AddCreature(
+            creature,
+            Team.Player
+            );
+        return creature;
     }
 
     public void AddCreature(Creature creature, Team team)

@@ -8,7 +8,6 @@ public class Blender : MonoBehaviour
     //      Detect what has fallen into the blender
     //      Turn that into juice
     //      Update juice count on juice manager
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Health health = other.GetComponent<Health>();

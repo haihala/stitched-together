@@ -7,6 +7,7 @@ public class JuiceManager : MonoBehaviour
     // Purpose
     //      Store how much juice the player has
     //      Use that juice to do stuff with it
+    public float unit_juice_cost;
     float juice_available;
 
     private static JuiceManager _instance;
@@ -27,5 +28,10 @@ public class JuiceManager : MonoBehaviour
     public void Add(float amount)
     {
         juice_available += amount;
+        if (juice_available > unit_juice_cost)
+        {
+            CreatureCoordinator.Instance.CreateFodder();
+            juice_available -= unit_juice_cost;
+        }
     }
 }
