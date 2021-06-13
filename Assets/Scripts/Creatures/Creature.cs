@@ -120,7 +120,7 @@ public class Creature : MonoBehaviour
         return new_limb;
     }
 
-    void SetLayer(GameObject obj, int layer)
+    public static void SetLayer(GameObject obj, int layer)
     {
         obj.layer = layer;
 
@@ -130,7 +130,7 @@ public class Creature : MonoBehaviour
         }
     }
 
-    void SetSpringsEnabled(GameObject obj, bool new_state)
+    public static void SetSpringsEnabled(GameObject obj, bool new_state)
     {
         foreach (SpringJoint2D spring in obj.GetComponentsInChildren<SpringJoint2D>())
         {

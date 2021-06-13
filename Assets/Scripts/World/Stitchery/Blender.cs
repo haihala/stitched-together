@@ -16,5 +16,10 @@ public class Blender : MonoBehaviour
             JuiceManager.Instance.Add(health.GetAmount());
             health.Die();
         }
+        if (other.GetComponent<Limb>())
+        {
+            JuiceManager.Instance.Add(1);
+            Destroy(other.gameObject);
+        }
     }
 }

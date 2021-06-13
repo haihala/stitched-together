@@ -30,7 +30,7 @@ public class JuiceManager : MonoBehaviour
         juice_available += amount;
         if (juice_available > unit_juice_cost)
         {
-            CreatureCoordinator.Instance.CreateFodder();
+            CreatureCoordinator.Instance.CreateFodderCreature();
             juice_available -= unit_juice_cost;
         }
     }

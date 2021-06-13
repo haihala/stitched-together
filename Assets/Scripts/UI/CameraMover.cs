@@ -22,6 +22,11 @@ public class CameraMover : MonoBehaviour
     private bool in_stitchery = false;
     private float z = -10;
 
+    private void Start()
+    {
+        JumpToStitchery();
+    }
+
     public void JumpToStitchery()
     {
         battlefield_offset = transform.position.x;

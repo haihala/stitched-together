@@ -13,9 +13,13 @@ public class CreatureCoordinator : MonoBehaviour
     public Transform fodder_spawnpoint;
     public GameObject basic_torso;
     public GameObject basic_arm;
-
     public CreatureBehavior NoBehavior;
+    public float spawn_interval_start;
+    public float spawn_interval_ramp;
+    public float spawn_interval_min;
 
+    private float spawn_interval;
+    private float next_spawn = 0;
     private List<Creature> player_creatures;
     private List<Creature> enemy_creatures;
 
@@ -32,6 +36,7 @@ public class CreatureCoordinator : MonoBehaviour
             _instance = this;
             player_creatures = new List<Creature>();
             enemy_creatures = new List<Creature>();
+            spawn_interval = spawn_interval_start;
         }
     }
 
@@ -83,22 +88,64 @@ public class CreatureCoordinator : MonoBehaviour
         // These are for buttons.
         // Apparently button functions can't have return values.
 
-        CreateFodder();
+        CreateFodderCreature();
     }
 
-    public Creature CreateFodder()
+    public Creature CreateFodderCreature()
     {
         GameObject basic = CreatureFactory.Create(basic_torso, basic_arm);
         basic.transform.position = fodder_spawnpoint.position;
-        basic.GetComponent<Creature>().team = Team.Player;
-        basic.GetComponent<Creature>().behavior = NoBehavior;
         basic.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         Creature creature = basic.GetComponent<Creature>();
+        creature.team = Team.Player;
+        basic.GetComponent<SpringJoint2D>().enabled = false;
+        HangerSpawner hs = basic.GetComponent<HangerSpawner>();
+        Destroy(hs.hanger);
+        creature.behavior = NoBehavior;
+
         AddCreature(
             creature,
             Team.Player
             );
         return creature;
+    }
+
+    private void Update()
+    {
+        if (Time.time > next_spawn)
+        {
+            next_spawn = Time.time + spawn_interval;
+            spawn_interval = Mathf.Max(spawn_interval - spawn_interval_ramp, spawn_interval_min);
+            CreateFodderBodyPart();
+        }
+    }
+
+    public GameObject CreateFodderBodyPart()
+    {
+        float randval = UnityEngine.Random.Range(0, 100);
+        if (randval > 80)
+        {
+            GameObject body = Instantiate(basic_torso);
+            body.transform.position = fodder_spawnpoint.position;
+            body.GetComponent<SpringJoint2D>().enabled = false;
+            HangerSpawner hs = body.GetComponent<HangerSpawner>();
+            Destroy(hs.hanger);
+            body.GetComponent<Creature>().behavior = NoBehavior;
+            return body;
+        }
+        else
+        {
+            GameObject limb = Instantiate(basic_arm);
+            limb.transform.position = fodder_spawnpoint.position;
+            Rigidbody2D rb = limb.GetComponent<Rigidbody2D>();
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            Creature.SetLayer(
+                limb,
+                LayerMask.NameToLayer("Default")
+            );
+            Creature.SetSpringsEnabled(limb, false);
+            return limb;
+        }
     }
 
     public void AddCreature(Creature creature, Team team)
@@ -123,7 +170,7 @@ public class CreatureCoordinator : MonoBehaviour
                 break;
             case Team.Enemy:
                 enemy_creatures.Remove(creature);
-                CreateFodder();
+                CreateFodderBodyPart();
                 break;
         }
     }
